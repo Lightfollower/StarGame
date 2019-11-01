@@ -17,7 +17,7 @@ public class StarGame extends ApplicationAdapter {
 	public void create () {
 		batch = new SpriteBatch();
 		img = new Texture("pig.png");
-		region = new TextureRegion(img, 68, 86 ,86 ,70);
+		region = new TextureRegion(img, 78, 102 ,97 ,80);
 	}
 
 	@Override
