@@ -33,6 +33,7 @@ public class StarGame1 extends ApplicationAdapter {
 
 		v1.set(100, 10);
 		v1.scl(0.9f);
+		v1.x *= 2;
 		System.out.println("v1.scl(0.9f); v1.x = " + v1.x + " v1.y = " + v1.y);
 		System.out.println("v1.len(); = " + v1.len());
 
