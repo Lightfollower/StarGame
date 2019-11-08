@@ -9,11 +9,11 @@ import ru.gdx.base.BaseScreen;
 
 public class MenuScreen extends BaseScreen {
 
-    private Vector2 destination;
-    private Vector2 direction;
+    private static final float V_LEN = 2.5f;
 
-    private Vector2 pos;
+    private Vector2 touch;
     private Vector2 v;
+    private Vector2 pos;
 
     private Texture img;
 
@@ -23,15 +23,16 @@ public class MenuScreen extends BaseScreen {
     private boolean downButtonPressed;
     private Vector2 startPosition;
 
+    private Vector2 tchCpy;
     @Override
     public void show() {
-        destination = new Vector2();
         super.show();
         img = new Texture("pig.png");
 
         pos = new Vector2();
         v = new Vector2();
-        direction = new Vector2();
+        touch = new Vector2();
+        tchCpy = new Vector2();
     }
 
     @Override
@@ -42,6 +43,13 @@ public class MenuScreen extends BaseScreen {
         batch.begin();
         batch.draw(img, pos.x, pos.y);
         batch.end();
+        tchCpy.set(touch);
+        if((tchCpy.sub(pos)).len() > V_LEN) {
+            pos.add(v);
+        } else {
+            pos.set(touch);
+        }
+
 
         if (rightButtonPressed) {
             pos.x++;
@@ -56,25 +64,6 @@ public class MenuScreen extends BaseScreen {
             pos.y--;
         }
 
-        //Движение по оси X
-        if (v.x < 0) {
-            if (pos.x > destination.x) {
-                pos.x += v.x;
-            }
-        } else {
-            if (pos.x < destination.x)
-                pos.x += v.x;
-        }
-
-        //Движение по оси Y
-        if (v.y < 0) {
-            if (pos.y > destination.y) {
-                pos.y += v.y;
-            }
-        } else {
-            if (pos.y < destination.y)
-                pos.y += v.y;
-        }
 
     }
 
@@ -88,14 +77,8 @@ public class MenuScreen extends BaseScreen {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         super.touchDown(screenX, screenY, pointer, button);
-        destination.x = screenX;
-        destination.y = Gdx.graphics.getHeight() - screenY;
-        direction = destination.cpy();
-        direction.sub(pos);
-        direction.nor();
-        startPosition = pos.cpy();
-        //Скорость свиньи будет магическим числом
-        v = direction.scl(2);
+       touch.set(screenX, Gdx.graphics.getHeight() - screenY);
+       v.set(touch.cpy().sub(pos).setLength(V_LEN));
         return false;
     }
 
@@ -142,7 +125,7 @@ public class MenuScreen extends BaseScreen {
     public boolean touchDragged(int screenX, int screenY, int pointer) {
         pos.x = screenX;
         pos.y = Gdx.graphics.getHeight() - screenY;
-        destination = pos.cpy();
+        touch = pos.cpy();
         return super.touchDragged(screenX, screenY, pointer);
     }
 }
