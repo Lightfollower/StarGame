@@ -21,7 +21,6 @@ public class MenuScreen extends BaseScreen {
     private boolean leftButtonPressed;
     private boolean upButtonPressed;
     private boolean downButtonPressed;
-    private Vector2 startPosition;
 
     private Vector2 tchCpy;
     @Override
