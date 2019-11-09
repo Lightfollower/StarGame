@@ -25,13 +25,18 @@ public class Sprite extends Rect {
         batch.draw(
                 regions[frame],
                 getLeft(), getBottom(),
+//                rotation point
                 halfWidth, halfHeight,
+//                size
                 getWidth(), getHeight(),
+//                scaling
                 scale, scale,
+//                rotation angle
                 angle
         );
     }
 
+//    scaling by height
     public void setHeightProportion(float height) {
         setHeight(height);
         float aspect = regions[frame].getRegionWidth() / (float) regions[frame].getRegionHeight();

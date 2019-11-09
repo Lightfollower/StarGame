@@ -58,14 +58,18 @@ public class BaseScreen implements Screen, InputProcessor {
         screenBounds.setLeft(0);
         screenBounds.setBottom(0);
 
+        //coordinate grid changes
         float aspect = width / (float) height;
         worldBounds.setHeight(1f);
         worldBounds.setWidth(1f * aspect);
         MatrixUtils.calcTransitionMatrix(worldToGl, worldBounds, glBounds);
+
+        //        drawing in GL coordinates from "our" coordinates
         batch.setProjectionMatrix(worldToGl);
         MatrixUtils.calcTransitionMatrix(screenToWorld, screenBounds, worldBounds);
         resize(worldBounds);
     }
+    //    World bounds in "our" grid
 
     public void resize(Rect worldBounds) {
 
@@ -113,6 +117,14 @@ public class BaseScreen implements Screen, InputProcessor {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         System.out.println("touchDown screenX = " + screenX + " screenY = " + (Gdx.graphics.getHeight() - screenY));
+        touch.set(screenX, screenBounds.getHeight() - screenY).mul(screenToWorld);
+        //        Change vector to "our" grid
+        touchDown(touch, pointer);
+        return false;
+    }
+
+    public boolean touchDown(Vector2 touch, int pointer) {
+        System.out.println("touchDown touchX = " + touch.x + " touchY = " + touch.y);
         return false;
     }
 

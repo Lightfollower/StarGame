@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Matrix3;
 
 import ru.gdx.base.BaseScreen;
 import ru.gdx.math.Rect;
@@ -40,6 +41,7 @@ public class MenuScreen extends BaseScreen {
         img = new Texture("pig.png");
         bg = new Texture("textures/bg.png");
         logo = new Logo(new TextureRegion(img));
+//        determines the size
         logo.setHeightProportion(0.5f);
         background = new Background(new TextureRegion(bg));
 
@@ -62,26 +64,28 @@ public class MenuScreen extends BaseScreen {
         background.draw(batch);
         logo.draw(batch);
         batch.end();
-        tchCpy.set(touch);
-        if((tchCpy.sub(pos)).len() > V_LEN) {
-            pos.add(v);
-        } else {
-            pos.set(touch);
-        }
-
-
-        if (rightButtonPressed) {
-            pos.x++;
-        }
-        if (leftButtonPressed) {
-            pos.x--;
-        }
-        if (upButtonPressed) {
-            pos.y++;
-        }
-        if (keyDown(19)) {
-            pos.y--;
-        }
+//        logo.update(touch, screenToWorld);
+//
+//        tchCpy.set(touch);
+//        if((tchCpy.sub(pos)).len() > V_LEN) {
+//            pos.add(v);
+//        } else {
+//            pos.set(touch);
+//        }
+//
+//
+//        if (rightButtonPressed) {
+//            pos.x++;
+//        }
+//        if (leftButtonPressed) {
+//            pos.x--;
+//        }
+//        if (upButtonPressed) {
+//            pos.y++;
+//        }
+//        if (downButtonPressed) {
+//            pos.y--;
+//        }
 
         //Old
 //        super.render(delta);
@@ -122,17 +126,19 @@ public class MenuScreen extends BaseScreen {
     @Override
     public void resize(Rect worldBounds) {
         super.resize(worldBounds);
+//        stretch the background
         background.resize(worldBounds);
     }
 
 
     @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        super.touchDown(screenX, screenY, pointer, button);
-       touch.set(screenX, Gdx.graphics.getHeight() - screenY);
-       v.set(touch.cpy().sub(pos).setLength(V_LEN));
+    public boolean touchDown(Vector2 touch, int pointer) {
+        this.touch.set(touch);
+        logo.touchDown(touch, pointer);
         return false;
     }
+
+
 
     @Override
     public boolean keyDown(int keycode) {
