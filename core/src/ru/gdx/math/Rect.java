@@ -25,6 +25,8 @@ public class Rect {
         this.halfHeight = halfHeight;
     }
 
+
+    //    Centring
     public float getLeft() {
         return pos.x - halfWidth;
     }
@@ -40,6 +42,9 @@ public class Rect {
     public float getBottom() {
         return pos.y - halfHeight;
     }
+
+
+
 
     public float getHalfWidth() {
         return halfWidth;

@@ -14,6 +14,8 @@ import ru.gdx.sprite.Logo;
 
 public class MenuScreen extends BaseScreen {
 
+    int count = 0;
+
     private Texture img;
     private Texture bg;
     private Logo logo;
@@ -22,9 +24,9 @@ public class MenuScreen extends BaseScreen {
     //Old
     private static final float V_LEN = 2.5f;
 
-    private Vector2 touch;
-    private Vector2 v;
-    private Vector2 pos;
+//    private Vector2 touch;
+//    private Vector2 v;
+//    private Vector2 pos;
 
 //    private Texture img;
 
@@ -34,7 +36,8 @@ public class MenuScreen extends BaseScreen {
     private boolean downButtonPressed;
     private Vector2 startPosition;
 
-    private Vector2 tchCpy;
+//    private Vector2 tchCpy;
+
     @Override
     public void show() {
         super.show();
@@ -48,22 +51,26 @@ public class MenuScreen extends BaseScreen {
         //old
 //        super.show();
         img = new Texture("pig.png");
-        pos = new Vector2();
-        v = new Vector2();
-        touch = new Vector2();
-        tchCpy = new Vector2();
+//        pos = new Vector2();
+//        v = new Vector2();
+//        touch = new Vector2();
+//        tchCpy = new Vector2();
     }
 
     @Override
     public void render(float delta) {
-
         super.render(delta);
+        count++;
         Gdx.gl.glClearColor(1, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
         background.draw(batch);
         logo.draw(batch);
         batch.end();
+        if(count % 60 == 0) {
+          logo.showCondition();
+        }
+//        logo.update();
 //        logo.update(touch, screenToWorld);
 //
 //        tchCpy.set(touch);
@@ -133,11 +140,10 @@ public class MenuScreen extends BaseScreen {
 
     @Override
     public boolean touchDown(Vector2 touch, int pointer) {
-        this.touch.set(touch);
-        logo.touchDown(touch, pointer);
+//        this.touch.set(touch);
+        logo.update(touch);
         return false;
     }
-
 
 
     @Override
@@ -181,9 +187,9 @@ public class MenuScreen extends BaseScreen {
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-        pos.x = screenX;
-        pos.y = Gdx.graphics.getHeight() - screenY;
-        touch = pos.cpy();
+//        pos.x = screenX;
+//        pos.y = Gdx.graphics.getHeight() - screenY;
+//        touch = pos.cpy();
         return super.touchDragged(screenX, screenY, pointer);
     }
 
