@@ -22,7 +22,7 @@ public class Logo extends Sprite {
 
     @Override
     public void draw(SpriteBatch batch) {
-        i = tchCpy.sub(pos).len();
+        i = tchCpy.cpy().sub(pos).len();
 
         if (i > V_LEN) {
             pos.add(v);
