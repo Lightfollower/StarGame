@@ -4,11 +4,41 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Matrix3;
+import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Vector2;
+
+import ru.gdx.math.MatrixUtils;
+import ru.gdx.math.Rect;
 
 public class BaseScreen implements Screen, InputProcessor {
 
     protected SpriteBatch batch;
+    private Rect screenBounds;
+    private Rect worldBounds;
+    private Rect glBounds;
 
+    private Matrix4 worldToGl;
+    private Matrix3 screenToWorld;
+
+    private Vector2 touch;
+
+    //old
+
+//    protected SpriteBatch batch;
+
+
+    public BaseScreen() {
+        this.screenBounds = new Rect();
+        this.worldBounds = new Rect();
+        this.glBounds = new Rect(0, 0, 1f, 1f);
+        this.worldToGl = new Matrix4();
+        this.screenToWorld = new Matrix3();
+        this.touch = new Vector2();
+    }
+
+
+    //identity
     @Override
     public void show() {
         System.out.println("show");
@@ -24,6 +54,25 @@ public class BaseScreen implements Screen, InputProcessor {
     @Override
     public void resize(int width, int height) {
         System.out.println("resize width = " + width + " height = " + height);
+        screenBounds.setSize(width, height);
+        screenBounds.setLeft(0);
+        screenBounds.setBottom(0);
+
+        //coordinate grid changes
+        float aspect = width / (float) height;
+        worldBounds.setHeight(1f);
+        worldBounds.setWidth(1f * aspect);
+        MatrixUtils.calcTransitionMatrix(worldToGl, worldBounds, glBounds);
+
+        //        drawing in GL coordinates from "our" coordinates
+        batch.setProjectionMatrix(worldToGl);
+        MatrixUtils.calcTransitionMatrix(screenToWorld, screenBounds, worldBounds);
+        resize(worldBounds);
+    }
+    //    World bounds in "our" grid
+
+    public void resize(Rect worldBounds) {
+
     }
 
     @Override
@@ -68,6 +117,14 @@ public class BaseScreen implements Screen, InputProcessor {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         System.out.println("touchDown screenX = " + screenX + " screenY = " + (Gdx.graphics.getHeight() - screenY));
+        touch.set(screenX, screenBounds.getHeight() - screenY).mul(screenToWorld);
+        //        Change vector to "our" grid
+        touchDown(touch, pointer);
+        return false;
+    }
+
+    public boolean touchDown(Vector2 touch, int pointer) {
+        System.out.println("touchDown touchX = " + touch.x + " touchY = " + touch.y);
         return false;
     }
 
