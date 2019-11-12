@@ -7,11 +7,11 @@ import com.badlogic.gdx.math.Vector2;
 import ru.gdx.math.Rect;
 
 public class Sprite extends Rect {
-//  rotate angle
+    //  rotate angle
     protected float angle;
-//    scaling
+    //    scaling
     protected float scale = 1f;
-//    images
+    //    images
     protected TextureRegion[] regions;
 
     protected int frame;
@@ -57,7 +57,7 @@ public class Sprite extends Rect {
     }
 
     public boolean touchDown(Vector2 touch, int pointer) {
-                return false;
+        return false;
     }
 
     public boolean touchUp(Vector2 touch, int pointer) {

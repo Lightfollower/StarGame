@@ -23,11 +23,6 @@ public class BaseScreen implements Screen, InputProcessor {
 
     private Vector2 touch;
 
-    //old
-
-//    protected SpriteBatch batch;
-
-
     public BaseScreen() {
         this.screenBounds = new Rect();
         this.worldBounds = new Rect();
@@ -37,8 +32,6 @@ public class BaseScreen implements Screen, InputProcessor {
         this.touch = new Vector2();
     }
 
-
-    //identity
     @Override
     public void show() {
         System.out.println("show");
@@ -58,18 +51,14 @@ public class BaseScreen implements Screen, InputProcessor {
         screenBounds.setLeft(0);
         screenBounds.setBottom(0);
 
-        //coordinate grid changes
         float aspect = width / (float) height;
         worldBounds.setHeight(1f);
         worldBounds.setWidth(1f * aspect);
         MatrixUtils.calcTransitionMatrix(worldToGl, worldBounds, glBounds);
-
-        //        drawing in GL coordinates from "our" coordinates
         batch.setProjectionMatrix(worldToGl);
         MatrixUtils.calcTransitionMatrix(screenToWorld, screenBounds, worldBounds);
         resize(worldBounds);
     }
-    //    World bounds in "our" grid
 
     public void resize(Rect worldBounds) {
 
@@ -94,6 +83,7 @@ public class BaseScreen implements Screen, InputProcessor {
     @Override
     public void dispose() {
         System.out.println("dispose");
+        batch.dispose();
     }
 
     @Override
@@ -116,9 +106,8 @@ public class BaseScreen implements Screen, InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        System.out.println("touchDown screenX = " + screenX + " screenY = " + (Gdx.graphics.getHeight() - screenY));
+        System.out.println("touchDown screenX = " + screenX + " screenY = " + screenY);
         touch.set(screenX, screenBounds.getHeight() - screenY).mul(screenToWorld);
-        //        Change vector to "our" grid
         touchDown(touch, pointer);
         return false;
     }
@@ -130,13 +119,27 @@ public class BaseScreen implements Screen, InputProcessor {
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        System.out.println("touchUp screenX = " + screenX + " screenY = " + (Gdx.graphics.getHeight() - screenY));
+        System.out.println("touchUp screenX = " + screenX + " screenY = " + screenY);
+        touch.set(screenX, screenBounds.getHeight() - screenY).mul(screenToWorld);
+        touchUp(touch, pointer);
+        return false;
+    }
+
+    public boolean touchUp(Vector2 touch, int pointer) {
+        System.out.println("touchUp touchX = " + touch.x + " touchY = " + touch.y);
         return false;
     }
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
         System.out.println("touchDragged screenX = " + screenX + " screenY = " + screenY);
+        touch.set(screenX, screenBounds.getHeight() - screenY).mul(screenToWorld);
+        touchDragged(touch, pointer);
+        return false;
+    }
+
+    public boolean touchDragged(Vector2 touch, int pointer) {
+        System.out.println("touchDragged touchX = " + touch.x + " touchY = " + touch.y);
         return false;
     }
 
