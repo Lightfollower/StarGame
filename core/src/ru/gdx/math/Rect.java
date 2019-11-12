@@ -1,4 +1,4 @@
-package ru.geekbrains.math;
+package ru.gdx.math;
 
 import com.badlogic.gdx.math.Vector2;
 
@@ -25,7 +25,8 @@ public class Rect {
         this.halfHeight = halfHeight;
     }
 
-//    Centring
+
+    //    Centring
     public float getLeft() {
         return pos.x - halfWidth;
     }

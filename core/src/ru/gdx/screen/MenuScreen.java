@@ -68,6 +68,7 @@ public class MenuScreen extends BaseScreen {
         batch.end();
         if(count % 60 == 0) {
             logo.showCondition();
+          logo.showCondition();
         }
 //        logo.update();
 //        logo.update(touch, screenToWorld);
