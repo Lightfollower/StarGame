@@ -1,16 +1,19 @@
-package ru.geekbrains.base;
+package ru.gdx.base;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
-import ru.geekbrains.math.Rect;
+import ru.gdx.math.Rect;
 
 public class Sprite extends Rect {
-
+//  rotate angle
     protected float angle;
+//    scaling
     protected float scale = 1f;
+//    images
     protected TextureRegion[] regions;
+
     protected int frame;
 
     public Sprite(TextureRegion region) {
@@ -22,8 +25,11 @@ public class Sprite extends Rect {
     }
 
     public void draw(SpriteBatch batch) {
+
         batch.draw(
+//                images
                 regions[frame],
+//                draw point
                 getLeft(), getBottom(),
 //                rotation point
                 halfWidth, halfHeight,
@@ -36,7 +42,6 @@ public class Sprite extends Rect {
         );
     }
 
-//    scaling by height
     public void setHeightProportion(float height) {
         setHeight(height);
         float aspect = regions[frame].getRegionWidth() / (float) regions[frame].getRegionHeight();
@@ -52,7 +57,7 @@ public class Sprite extends Rect {
     }
 
     public boolean touchDown(Vector2 touch, int pointer) {
-        return false;
+                return false;
     }
 
     public boolean touchUp(Vector2 touch, int pointer) {
