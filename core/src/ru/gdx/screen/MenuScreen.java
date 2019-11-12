@@ -141,7 +141,7 @@ public class MenuScreen extends BaseScreen {
     @Override
     public boolean touchDown(Vector2 touch, int pointer) {
 //        this.touch.set(touch);
-        logo.update(touch);
+        logo.touchDown(touch, pointer);
         return false;
     }
 

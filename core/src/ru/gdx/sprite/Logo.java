@@ -40,9 +40,8 @@ public class Logo extends Sprite {
         );
     }
 
-    public void update(Vector2 touch) {
+    public void update() {
         System.out.println("updating");
-        this.touch = touch;
         tchCpy.set(this.touch);
         System.out.println("tchcpy " + tchCpy);
 
@@ -69,7 +68,8 @@ public class Logo extends Sprite {
     public boolean touchDown(Vector2 touch, int pointer) {
 //        System.out.println();
 //        System.out.println();
-//        this.touch = touch;
+        this.touch = touch;
+        update();
 //        tchCpy.set(this.touch);
 //        System.out.println("tchcpy " + tchCpy);
 //
