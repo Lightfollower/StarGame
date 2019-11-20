@@ -19,6 +19,9 @@ public class Enemy extends Ship {
     @Override
     public void update(float delta) {
         super.update(delta);
+        if(getTop()>worldBounds.getTop()){
+            pos.y -= 0.01f;
+        }
         if (getBottom() < worldBounds.getBottom()) {
             destroy();
         }
