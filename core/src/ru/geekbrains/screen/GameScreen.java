@@ -18,6 +18,7 @@ import ru.geekbrains.pool.ExplosionPool;
 import ru.geekbrains.sprite.Background;
 import ru.geekbrains.sprite.Bullet;
 import ru.geekbrains.sprite.Enemy;
+import ru.geekbrains.sprite.GameOver;
 import ru.geekbrains.sprite.MainShip;
 import ru.geekbrains.sprite.Star;
 import ru.geekbrains.utils.EnemyEmitter;
@@ -34,6 +35,7 @@ public class GameScreen extends BaseScreen {
     private Background background;
     private Star[] stars;
     private MainShip mainShip;
+    private GameOver gameOver;
 
     private BulletPool bulletPool;
     private EnemyPool enemyPool;
@@ -48,6 +50,7 @@ public class GameScreen extends BaseScreen {
         bg = new Texture("textures/bg.png");
         background = new Background(new TextureRegion(bg));
         atlas = new TextureAtlas("textures/mainAtlas.tpack");
+        gameOver = new GameOver(atlas);
         stars = new Star[STAR_COUNT];
         for (int i = 0; i < STAR_COUNT; i++) {
             stars[i] = new Star(atlas);
@@ -76,6 +79,7 @@ public class GameScreen extends BaseScreen {
             star.resize(worldBounds);
         }
         mainShip.resize(worldBounds);
+        gameOver.resize(worldBounds);
     }
 
     @Override
@@ -119,11 +123,14 @@ public class GameScreen extends BaseScreen {
         for (Star star : stars) {
             star.update(delta);
         }
-        mainShip.update(delta);
-        bulletPool.updateActiveSprites(delta);
-        enemyPool.updateActiveSprites(delta);
+        if (!mainShip.isDestroyed()) {
+            mainShip.update(delta);
+            bulletPool.updateActiveSprites(delta);
+            enemyPool.updateActiveSprites(delta);
+            enemyEmitter.generate(delta);
+        }
         explosionPool.updateActiveSprites(delta);
-        enemyEmitter.generate(delta);
+        gameOver.update(delta);
     }
 
     private void checkCollisions() {
@@ -166,15 +173,17 @@ public class GameScreen extends BaseScreen {
         Gdx.gl.glClearColor(1, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
+        gameOver.draw(batch);
+
         background.draw(batch);
         for (Star star : stars) {
             star.draw(batch);
         }
         if (!mainShip.isDestroyed()) {
             mainShip.draw(batch);
+            bulletPool.drawActiveSprites(batch);
+            enemyPool.drawActiveSprites(batch);
         }
-        bulletPool.drawActiveSprites(batch);
-        enemyPool.drawActiveSprites(batch);
         explosionPool.drawActiveSprites(batch);
         batch.end();
     }
