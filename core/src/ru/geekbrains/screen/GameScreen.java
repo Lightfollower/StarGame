@@ -130,7 +130,6 @@ public class GameScreen extends BaseScreen {
             enemyEmitter.generate(delta);
         }
         explosionPool.updateActiveSprites(delta);
-        gameOver.update(delta);
     }
 
     private void checkCollisions() {
@@ -173,7 +172,6 @@ public class GameScreen extends BaseScreen {
         Gdx.gl.glClearColor(1, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
-        gameOver.draw(batch);
 
         background.draw(batch);
         for (Star star : stars) {
@@ -184,6 +182,9 @@ public class GameScreen extends BaseScreen {
             bulletPool.drawActiveSprites(batch);
             enemyPool.drawActiveSprites(batch);
         }
+        if (mainShip.isDestroyed())
+            gameOver.draw(batch);
+
         explosionPool.drawActiveSprites(batch);
         batch.end();
     }
