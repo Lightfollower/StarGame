@@ -11,7 +11,7 @@ import ru.geekbrains.pool.ExplosionPool;
 
 public class Enemy extends Ship {
 
-    private enum State { DESCENT, FIGHT }
+    private enum State {DESCENT, FIGHT}
 
     private State state;
 
@@ -77,5 +77,16 @@ public class Enemy extends Ship {
                         || bullet.getBottom() > getTop()
                         || bullet.getTop() < pos.y
         );
+    }
+
+    @Override
+    public boolean touchDown(Vector2 touch, int pointer) {
+        if (isMe(touch)) {
+            destroy();
+            System.out.println("wasted");
+            return true;
+
+        }
+        return false;
     }
 }
